@@ -8,7 +8,6 @@ import (
 
 type KafkaConfig struct {
 	BrokerAddress []string
-	Topic         string
 }
 type KafkaMgrType struct {
 	Writer *kafka.Writer
@@ -20,7 +19,6 @@ var KafkaMgr KafkaMgrType
 func (k *KafkaMgrType) Init() {
 	KafkaMgr.Writer = &kafka.Writer{
 		Addr:     kafka.TCP(k.Config.BrokerAddress...),
-		Topic:    k.Config.Topic,
 		Balancer: &kafka.LeastBytes{},
 	}
 }
