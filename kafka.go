@@ -6,18 +6,21 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-type KafkaMgrType struct {
-	Writer        *kafka.Writer
+type KafkaConfig struct {
 	BrokerAddress []string
 	Topic         string
+}
+type KafkaMgrType struct {
+	Writer *kafka.Writer
+	Config *KafkaConfig
 }
 
 var KafkaMgr KafkaMgrType
 
 func (k *KafkaMgrType) Init() {
 	KafkaMgr.Writer = &kafka.Writer{
-		Addr:     kafka.TCP(k.BrokerAddress...),
-		Topic:    k.Topic,
+		Addr:     kafka.TCP(k.Config.BrokerAddress...),
+		Topic:    k.Config.Topic,
 		Balancer: &kafka.LeastBytes{},
 	}
 }
@@ -28,7 +31,7 @@ func (k *KafkaMgrType) Write(c context.Context, input interface{}) error {
 		return err
 	}
 	err = k.Writer.WriteMessages(c,
-		kafka.Message{Topic: k.Topic, Value: b},
+		kafka.Message{Topic: k.Config.Topic, Value: b},
 	)
 	return err
 }
