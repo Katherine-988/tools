@@ -23,13 +23,13 @@ func (k *KafkaMgrType) Init() {
 	}
 }
 
-func (k *KafkaMgrType) Write(c context.Context, input interface{}) error {
+func (k *KafkaMgrType) Write(c context.Context, topic string, input interface{}) error {
 	b, err := jsoniter.Marshal(input)
 	if err != nil {
 		return err
 	}
 	err = k.Writer.WriteMessages(c,
-		kafka.Message{Topic: k.Config.Topic, Value: b},
+		kafka.Message{Topic: topic, Value: b},
 	)
 	return err
 }
