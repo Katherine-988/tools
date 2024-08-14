@@ -1,4 +1,4 @@
-module tools
+module github.com/Katherine-988/tools
 
 go 1.21
 
